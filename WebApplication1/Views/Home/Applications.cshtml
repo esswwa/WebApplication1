@@ -1,0 +1,123 @@
+﻿@model Application
+@using WebApplication1.Models
+@{
+    ViewData["Title"] = "Applications";
+    bool empty = false;
+    List<Application> applications = new List<Application>();
+    if (ViewBag.Applications != null)
+    {
+        applications = ViewBag.Applications;
+        if (applications.Count > 0)
+        {
+            empty = false;
+        }
+        else
+            empty = true;
+    }
+    else
+        empty = true;
+
+}
+
+<h1>Заявки</h1>
+<hr />
+    <form method="post" asp-action="Applications">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input name="search" placeholder="Поиск"/>
+        <input type="submit" value="Искать" class="btn btn-primary" asp-controller="Home" asp-action="Applications" />
+    </form>
+<div class="row">
+    <div class="col-md-4">
+        @if (empty == false && UserCheck.User.IdRole == 0)
+        {
+            <div>
+                @foreach(var application in applications)
+                {
+                    <div style="display:flex;flex-direction:column;margin-top: 10px; width: 1000px; padding: 10px;background-color: #B0E5FD;border-radius: 10px;
+                                display: flex;flex-direction: row">
+
+                            <div style="display:flex">
+                                <p>Заявка №@application.IdApplication</p>
+                                <p style="margin-left:5px">Тип оборудования: @application.IdTypeNavigation.Type</p>
+                                <p style="margin-left:5px">Дата обращения: @application.DateAdd</p>
+                            </div>
+                            <div style="display:flex; margin-top:5px">
+                                <p>Описание проблемы: @application.Description</p>
+                            </div>
+                            <div style="display:flex; margin-top:5px">
+                                <p>Статус: @application.Status</p>
+                                <p style="margin-left:5px">Этап выполнения: @application.Phase</p>
+                            </div>
+                          
+                         
+                    </div>
+                }
+            </div>
+        }
+        else if (empty == false && UserCheck.User.IdRole == 1)
+        {
+            <div>
+                @foreach (var application in applications)
+                {
+                    <div style="display:flex;flex-direction:column;margin-top: 10px; width: 1000px;padding: 10px;background-color: #B0E5FD;border-radius: 10px;
+                                display: flex;flex-direction: row">
+
+                        <div style="display:flex">
+                            <p>Заявка №@application.IdApplication</p>
+                            <p style="margin-left:5px">Тип оборудования: @application.IdTypeNavigation.Type</p>
+                            <p style="margin-left:5px">Дата обращения: @application.DateAdd</p>
+                        </div>
+                        <div style="display:flex; margin-top:5px">
+                            <p>Описание проблемы: @application.Description</p>
+                        </div>
+                        <div style="display:flex; margin-top:5px">
+                            <p>Статус: @application.Status</p>
+                            <p style="margin-left:5px">Этап выполнения: @application.Phase</p>
+                        </div>
+
+                    </div>
+                    <form method="get" asp-action="EditApplication">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input name="id" value="@application.IdApplication" hidden />
+                        <input type="submit" value="Редактировать заявление" class="btn btn-primary" asp-controller="Home" asp-action="EditApplication" />
+                    </form>
+                }
+            </div>
+        }
+        else if (empty == false && UserCheck.User.IdRole == 2)
+        {
+            <div>
+                @foreach (var application in applications)
+                {
+                    <div style="display:flex;flex-direction:column;margin-top: 10px; width: 1000px;padding: 10px;background-color: #B0E5FD;border-radius: 10px;
+                                display: flex;flex-direction: row">
+
+                        <div style="display:flex">
+                            <p>Заявка №@application.IdApplication</p>
+                            <p style="margin-left:5px">Тип оборудования: @application.IdTypeNavigation.Type</p>
+                            <p style="margin-left:5px">Дата обращения: @application.DateAdd</p>
+                        </div>
+                        <div style="display:flex; margin-top:5px">
+                            <p>Описание проблемы: @application.Description</p>
+                        </div>
+                        <div style="display:flex; margin-top:5px">
+                            <p>Статус: @application.Status</p>
+                            <p style="margin-left:5px">Этап выполнения: @application.Phase</p>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <h4>Заявки отсутствуют</h4>
+        }
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

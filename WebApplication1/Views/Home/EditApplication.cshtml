@@ -1,0 +1,63 @@
+﻿@model WebApplication1.Models.Application
+
+@{
+    ViewData["Title"] = "EditApplication";
+
+    Application application = ViewBag.Application;
+
+    List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+    List<User> executor = ViewBag.IdExecutor as List<User>;
+    if (executor != null)
+    {
+        selectListItems = executor.Select(x => new SelectListItem
+            {
+                Value = x.IdUser.ToString(),
+                Text = x.Fullname
+            }).ToList();
+    }
+
+}
+
+@using WebApplication1.Models
+
+
+<h1>Редактирование заявки</h1>
+
+<h4>Заявка</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="EditApplication">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input name="id" value="@application.IdApplication" hidden />
+            <div class="form-group">
+                <label asp-for="IdExecutor" class="control-label">Исполнитель</label>
+                <select name="IdExecutor" asp-for="IdExecutor" class="form-control" value="@application.IdUser" asp-items="selectListItems">Исполнитель</select>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание</label>
+                <input name="Description" asp-for="Description" value="@application.Description" class="form-control"/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phase" class="control-label">Этап выполнения заявки</label>
+                <input name="Phase" asp-for="Phase" value="@application.Phase" class="form-control" />
+                <span asp-validation-for="Phase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Отредактировать заявление" class="btn btn-primary" asp-controller="Home" asp-action="EditApplication" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="SignIn">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

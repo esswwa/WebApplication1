@@ -1,0 +1,36 @@
+﻿@model Application
+@using WebApplication1.Models
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<h1>Общая статистика сервисной службы</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+           
+                    <div style="display:flex;flex-direction:column;margin-top: 10px; width: 1000px; padding: 10px;background-color: #B0E5FD;border-radius: 10px;
+                                display: flex;flex-direction: row">
+
+                        <div style="display:flex">
+                            <p>Количество выполненных заявок: @ViewBag.Count</p>
+                        </div>
+                        <div style="display:flex; flex-direction:column; margin-left:5px">
+                            <p>Статистика по типам неисправностей:</p>
+                            @foreach (var item in ViewBag.TypeMalfunctions)
+                            {
+                                <p>Тип неисправности: @item.Key, количество: @item.Value</p>
+                            }
+                        </div>
+
+
+                    </div>
+        
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
