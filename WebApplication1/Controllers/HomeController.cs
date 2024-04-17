@@ -60,8 +60,9 @@ namespace WebApplication1.Controllers
                 else if (UserCheck.User.IdRole == 2)
                     applications = _dbContext.Applications.Where(i => i.IdUser == UserCheck.User.IdUser || i.IdExecutor == UserCheck.User.IdUser).ToList();
                 ViewBag.Applications = applications;
+                return View();
             }
-            return View();
+            return RedirectToAction("SignIn");
         }
         [HttpPost]
         public async Task<IActionResult> Applications(string search)
@@ -122,8 +123,9 @@ namespace WebApplication1.Controllers
 
                     ViewBag.Applications = applications;
                 }
+                return View();
             }
-            return View();
+            return RedirectToAction("SignIn");
         }
 
         public async Task<IActionResult> Statistics()
